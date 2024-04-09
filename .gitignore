@@ -396,3 +396,9 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+#ignore python virtual environment
+venv/
+
+#ignore .DS_Store file
+.DS_Store

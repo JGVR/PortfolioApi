@@ -402,3 +402,6 @@ myenv/
 
 #ignore .DS_Store file
 .DS_Store
+
+#ignore environment variable file
+.env

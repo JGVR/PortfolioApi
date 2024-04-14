@@ -1,5 +1,5 @@
 from typing import List
-from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from pydantic import BaseModel, ConfigDict, Field
 from datetime import date
 
 class Person(BaseModel):

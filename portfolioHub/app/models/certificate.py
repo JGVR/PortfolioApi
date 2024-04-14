@@ -1,10 +1,8 @@
-from dataclasses import dataclass
 from school import School
 from entity import Entity
+from pydantic import Field
 
-@dataclass(frozen=True)
 class Certificate(Entity):
-    name: str
-    url: str
-    description: str
+    url: str = Field(default="")
+    description: str = Field(max_length=150, default="")
     platform: School

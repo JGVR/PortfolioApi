@@ -32,3 +32,7 @@ class DbCollection(ABC):
     @abstractmethod
     def upsert_many() -> None:
         pass
+
+    @abstractmethod
+    def count() -> None:
+        pass

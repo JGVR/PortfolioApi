@@ -1,6 +1,6 @@
 from typing import List
 from pydantic import BaseModel, ConfigDict, Field
-from datetime import date
+from datetime import datetime
 
 class Person(BaseModel):
     # > make fields immutable after instantiation.
@@ -13,16 +13,16 @@ class Person(BaseModel):
     first_name: str = Field(min_length=1, max_length=250, alias="firstName")
     middle_name: str = Field(max_length=250, default="", alias="middleName")
     last_name: str = Field(min_length=1, max_length=250, alias="lastName")
-    date_of_birth: date = Field(alias="dateOfBirth")
+    date_of_birth: datetime = Field(alias="dateOfBirth", default=datetime(1996, 9, 11))
     hobbies: List[str] = Field(default=[])
-    short_bio: str = Field(min_length=50, max_length=350, alias="shortBio")
-    bio: str = Field(max_length=1000)
+    short_bio: str = Field(max_length=350, alias="shortBio", default="")
+    bio: str = Field(max_length=1000, default="")
     country_of_birth: str = Field(default="", alias="countryOfBirth")
     country_of_residence: str = Field(default="", alias="countryOfResidence")
     # > could use EmailStr pydantic type instead
     email_address: str = Field(pattern=r"^[\w,-]+@[a-zA-Z].{2,}$", alias="emailAddress")
     linkedIn_url: str = Field(default="", alias="linkedInUrl")
     gitHub_url: str = Field(default="", alias="gitHubUrl")
-    achievement_ids: List[int] = Field(default=None)
-    project_ids: List[int] = Field(default=None)
-    experience_ids: List[int] = Field(default=None)
+    achievement_ids: List[int] = Field(default=[])
+    project_ids: List[int] = Field(default=[])
+    experience_ids: List[int] = Field(default=[])

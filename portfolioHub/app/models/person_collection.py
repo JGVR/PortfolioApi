@@ -1,8 +1,7 @@
 from typing import List, Any, Dict
 from pymongo.collection import Collection
-from dbcollection import DbCollection
-from person import Person
-from pymongo import MongoClient
+from .dbcollection import DbCollection
+from .person import Person
 
 class PersonCollection(DbCollection):
     def __init__(self, collection: Collection):
@@ -42,39 +41,3 @@ class PersonCollection(DbCollection):
     def count(self, filter: Dict[str,Any]) -> int:
         return self.collection.count_documents(filter)
     
-
-cluster = MongoClient("mongodb+srv://jv_admin:Th0r3s3lDi0sDelTrueno1130!@portfolio.jmd2tdg.mongodb.net/?retryWrites=true&w=majority&appName=Portfolio")
-db = cluster["portfolio"]
-"""persons = [
-    Person(
-        _id = 2,
-        firstName = "Hector",
-        lastName = "Vasquez",
-        emailAddress = "hecvasro@gmail.com"
-    ),
-    Person(
-        _id = 3,
-        firstName = "Massiel",
-        lastName = "Vasquez",
-        emailAddress = "massi@gmail.com"
-    ),
-    Person(
-        _id = 4,
-        firstName = "Allison",
-        lastName = "Vasquez",
-        emailAddress = "alli@gmail.com",
-        shortBio = "I am a registered nurse with 3+ years of experience."
-    )
-]"""
-person = Person(
-    _id = 3,
-    firstName = "Massiel",
-    lastName = "Vasquez",
-    emailAddress = "massi@gmail.com"
-)
-change = {
-    "shortBio" : "Hello my name is Massiel",
-    "countryOfResidence": "Dominican Republic"
-}
-c = PersonCollection(db["persons"])
-print(c.upsert_one(person, change))

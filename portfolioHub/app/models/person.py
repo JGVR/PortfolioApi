@@ -27,7 +27,3 @@ class Person(BaseModel):
     achievement_ids: List[int] = Field(default=[])
     project_ids: List[int] = Field(default=[])
     experience_ids: List[int] = Field(default=[])
-
-    @field_validator('hobbies', mode="before")
-    def parse_hobbies(cls, value) -> List[Hobby]:
-        return [Hobby(name=hobby) for hobby in value]

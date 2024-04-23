@@ -9,110 +9,162 @@ class TestPersonCollection:
     cluster = MongoClient("mongodb+srv://jv_admin:Th0r3s3lDi0sDelTrueno1130!@portfolio.jmd2tdg.mongodb.net/?retryWrites=true&w=majority&appName=Portfolio")
     db = cluster["portfolio"]
     collection = PersonCollection(db["persons"])
-    filter_1 = {"_id": 1}
-    filter_2 = {"lastName": "Vasquez"}
-    person1 = Person(
-        _id = 6,
-        firstName = "Will",
-        lastName = "Oliver",
-        emailAddress = "wollie@gmail.com"
-    )
-    person2 = Person(
-        _id = 7,
-        firstName = "Blake",
-        lastName = "Dutton",
-        emailAddress = "bdutt@gmail.com"
-    )
-    person3 = Person(
-        _id = 8,
-        firstName = "Allison",
-        middleName = "Brooke",
-        lastName = "Vasquez",
-        dateOfBirth = datetime(1994,4,4),
-        hobbies = ["Playing Basketball"],
-        shortBio = "",
-        bio = "",
-        countryOfBirth = "United States",
-        countryOfResidence = "United States",
-        emailAddress = "avasquez@gmail.com",
-        linkedInUrl = "",
-        gitHubUrl = "",
-        achievement_ids = [],
-        project_ids = [],
-        experience_ids = []
-    )
-    person4 = Person(
-        _id = 9,
-        firstName = "Michelle",
-        middleName = "",
-        lastName = "Littleton",
-        dateOfBirth = datetime(1994,4,4),
-        hobbies = ["Working out"],
-        shortBio = "",
-        bio = "",
-        countryOfBirth = "United States",
-        countryOfResidence = "United States",
-        emailAddress = "mlittle@gmail.com",
-        linkedInUrl = "",
-        gitHubUrl = "",
-        achievement_ids = [],
-        project_ids = [],
-        experience_ids = []
-    )
+
+    def test_insert_one_person(self):
+        person1 = Person(
+            _id = 1,
+            firstName = "Juan",
+            middleName = "Gabriel",
+            lastName = "Vasquez",
+            dateOfBirth = datetime(1996,9,11),
+            hobbies = [Hobby(name="Playing Golf"), Hobby(name="Playing Video Games")],
+            shortBio = "",
+            bio = "I'm the best",
+            countryOfBirth = "Dominican Republic",
+            countryOfResidence = "United States",
+            emailAddress = "juangabrielvasquez11@gmail.com",
+            linkedInUrl = "",
+            gitHubUrl = "",
+            achievement_ids = [],
+            project_ids = [],
+            experience_ids = []
+        )
+        result = self.collection.insert_one(person1)
+        assert result == 1
     
-    def test_find_one_returns_a_person(self):
-        person = self.collection.find_one(self.filter_1)
-        assert isinstance(person, Person)
-  
-    def test_find_one_returns_correct_person(self):
-        person = self.collection.find_one(self.filter_1)
-        assert 1 == person.model_dump(by_alias=True)["_id"]
-
-    def test_find_one_raises_type_error_on_no_args(self):
-        with pytest.raises(TypeError):
-            self.collection.find_one()
-
-    def test_find_many_returns_a_list_of_person(self):
-        persons = self.collection.find_many(self.filter_2)
-        assert all(isinstance(person, Person) for person in persons)
-
-    def test_find_many_returns_correct_persons(self):
-        persons = self.collection.find_many(self.filter_2)
-        assert all(person.last_name for person in persons)
-
-    def test_find_many_raises_type_error_on_no_args(self):
-        with pytest.raises(TypeError):
-            self.collection.find_many()
-    
-    def test_find_many_returns_correct_amt_of_persons(self):
-        persons = self.collection.find_many(self.filter_2, 2)
-        assert len(persons) == 2
-
-    #def test_insert_one_person_with_only_required_prop(self):
-    #    result = self.collection.insert_one(self.person1)
-    #    assert result == True
-
-    #def test_insert_one_complete_person(self):
-    #    result = self.collection.insert_one(self.person2)
-    #    assert result == True
-
-    def test_insert_one_raises_type_error_on_no_args(self):
-        with pytest.raises(TypeError):
-            self.collection.insert_one()
+    def test_insert_one_already_in_db(self):
+        person1 = Person(
+            _id = 1,
+            firstName = "Juan",
+            middleName = "Gabriel",
+            lastName = "Vasquez",
+            emailAddress = "juangabrielvasquez11@gmail.com",
+        )
+        with pytest.raises(Exception) as exc:
+            self.collection.insert_one(person1)
+        assert "duplicate key error" in str(exc.value)
     
     def test_insert_one_with_a_non_person_arg(self):
         with pytest.raises(ValueError) as ex:
             self.collection.insert_one({"_id":7})
         assert "Input data expected to be a Person object" in str(ex.value)
+
+    def test_insert_many_complete_persons(self):
+        persons = [
+            Person(
+                _id = 2,
+                firstName = "Will",
+                lastName = "Oliver",
+                emailAddress = "wollie@gmail.com"
+            ),
+            Person(
+                _id = 3,
+                firstName = "Blake",
+                lastName = "Dutton",
+                emailAddress = "bdutt@gmail.com"
+            )
+        ]
+        result = self.collection.insert_many(persons)
+        assert result[0] == 2
+        assert result[1] == 3
+
+    def test_insert_many_already_in_db(self):
+        persons = [
+           Person(
+               _id = 2,
+               firstName = "Will",
+               lastName = "Oliver",
+               emailAddress = "wollie@gmail.com"
+           ),
+           Person(
+               _id = 3,
+               firstName = "Blake",
+               lastName = "Dutton",
+               emailAddress = "bdutt@gmail.com"
+           )
+       ]
+        with pytest.raises(Exception) as exc:
+            self.collection.insert_many(persons)
+        assert "duplicate key error" in str(exc.value)
+
+    def test_find_one_returns_correct_person(self):
+        person = self.collection.find_one({"_id":1})
+        assert person.model_dump(by_alias=True)["_id"] == 1
+
+    def test_find_one_person_not_in_db(self):
+        person = self.collection.find_one({"_id": 15})
+        assert person == None
+
+    def test_find_many_returns_correct_persons(self):
+        persons = self.collection.find_many({"shortBio": ""})
+        assert all(person.last_name for person in persons)
+
+    def test_find_many_persons_not_in_db(self):
+        persons = self.collection.find_many({"lastName": "Harper"})
+        assert persons == None
     
-    #def test_insert_many_persons_with_only_required_prop(self):
-    #    result = self.collection.insert_many([self.person1, self.person2])
-    #    assert result == True
+    def test_find_many_returns_correct_amt_of_persons(self):
+        persons = self.collection.find_many({"bio": ""}, 1)
+        assert len(persons) == 1
 
-    #def test_insert_many_complete_persons(self):
-    #    result = self.collection.insert_many([self.person3, self.person4])
-    #    assert result == True
+    def test_delete_one_person(self):
+        result = self.collection.delete_one({"_id":3})
+        assert result == 1
+    
+    def test_delete_one_person_not_in_db(self):
+        result = self.collection.delete_one({"_id": 15})
+        assert result == 0
 
-    def test_insert_many_raises_type_error_on_no_args(self):
-        with pytest.raises(TypeError):
-            self.collection.insert_many()
+    def test_delete_many_person(self):
+        result = self.collection.delete_many({"shortBio": ""})
+        assert result == 2
+    
+    def test_delete_many_person_not_in_db(self):
+        result = self.collection.delete_many({"lastName": "Thor"})
+        assert result == 0
+
+    def test_upsert_one_existing_person(self):
+        person1 = Person(
+            _id = 1,
+            firstName = "Juan",
+            middleName = "Gabriel",
+            lastName = "Vasquez",
+            dateOfBirth = datetime(1996,9,11),
+            hobbies = [Hobby(name="Playing Golf"), Hobby(name="Playing Video Games")],
+            shortBio = "I'm the best of the bests",
+            bio = "I'm the best",
+            countryOfBirth = "Dominican Republic",
+            countryOfResidence = "United States",
+            emailAddress = "juangabrielvasquez11@gmail.com",
+            linkedInUrl = "",
+            gitHubUrl = "",
+            achievement_ids = [],
+            project_ids = [],
+            experience_ids = []
+        )
+        filter = {"_id": 1}
+        result = self.collection.upsert_one(filter, person1)
+        assert result == 1
+
+    def test_upsert_one_new_person(self):
+        person1 = Person(
+            _id = 4,
+            firstName = "John",
+            middleName = "Gabriel",
+            lastName = "Vasquez",
+            dateOfBirth = datetime(1996,9,11),
+            hobbies = [Hobby(name="Playing Golf"), Hobby(name="Playing Video Games")],
+            shortBio = "I'm the best of the bests",
+            bio = "I'm the best",
+            countryOfBirth = "Dominican Republic",
+            countryOfResidence = "United States",
+            emailAddress = "juangvasquez11@gmail.com",
+            linkedInUrl = "",
+            gitHubUrl = "",
+            achievement_ids = [],
+            project_ids = [],
+            experience_ids = []
+        )
+        filter = {"_id": 4}
+        result = self.collection.upsert_one(filter, person1)
+        assert result == 4

@@ -8,10 +8,14 @@ class PersonCollection(DbCollection):
         self.collection = collection
 
     def insert_one(self, person: Person) -> bool:
+        if not isinstance(person, Person):
+            raise ValueError("Input data expected to be a Person object")
         person_data = person.model_dump(by_alias=True)
         return self.collection.insert_one(person_data).acknowledged
     
     def insert_many(self, persons: List[Person]) -> bool:
+        if not all(isinstance(person, Person) for person in persons):
+            raise ValueError("Input data expected to be a list of Person")
         persons_data = [person.model_dump(by_alias=True) for person in persons]
         return self.collection.insert_many(persons_data).acknowledged
     

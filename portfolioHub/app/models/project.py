@@ -9,6 +9,7 @@ class Project(BaseModel):
     model_config = ConfigDict(frozen=True, str_strip_whitespace=True, extra='forbid')
 
     id: int = Field(gt=0, alias="_id")
+    person_id: int = Field(gt=0, alias="personId")
     name: str = Field(min_length=5 ,max_length=250)
     description: str = Field(min_length=50, max_length=250)
     skills: List[Skill] = Field(default=[])

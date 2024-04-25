@@ -40,9 +40,8 @@ class PersonCollection(DbCollection):
         return self.collection.delete_many(filter).deleted_count
     
     def upsert_one(self, filter: Dict[str,Any], modifications: Person | Dict[str,Any]) -> int:
-        person_data = filter
         changes = modifications.model_dump(by_alias=True) if isinstance(modifications, Person) else modifications
-        result = self.collection.update_one(person_data, {"$set": changes}, upsert=True)
+        result = self.collection.update_one(filter, {"$set": changes}, upsert=True)
         return result.modified_count if result.modified_count > 0 else result.upserted_id
     
     def upsert_many(self, filter: Dict[str,Any]) -> bool:

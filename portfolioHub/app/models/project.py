@@ -1,6 +1,6 @@
 from typing import List
 from pydantic import BaseModel, ConfigDict, Field
-from skill import Skill
+from .skill import Skill
 
 class Project(BaseModel):
     # > make fields immutable after instantiation.

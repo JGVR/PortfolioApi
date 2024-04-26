@@ -1,5 +1,5 @@
-from school import School
-from entity import Entity
+from .school import School
+from .entity import Entity
 from pydantic import Field
 
 class Degree(Entity):

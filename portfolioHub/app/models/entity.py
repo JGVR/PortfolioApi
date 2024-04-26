@@ -6,4 +6,4 @@ class Entity(BaseModel):
     # > rejects extra fields from been added
     model_config = ConfigDict(frozen=True, str_strip_whitespace=True, extra='forbid')
 
-    name: str = Field(min_length=5, max_length=250)
+    name: str = Field(max_length=250)

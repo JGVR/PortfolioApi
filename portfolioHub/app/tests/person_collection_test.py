@@ -3,10 +3,11 @@ from datetime import datetime
 from portfolioHub.app.models.person_collection import PersonCollection
 from portfolioHub.app.models.person import Person
 from portfolioHub.app.models.hobby import Hobby
+from config import config
 from pymongo import MongoClient
 
 class TestPersonCollection:
-    cluster = MongoClient("mongodb+srv://jv_admin:Th0r3s3lDi0sDelTrueno1130!@portfolio.jmd2tdg.mongodb.net/?retryWrites=true&w=majority&appName=Portfolio")
+    cluster = MongoClient(config.atlas_conn_str)
     db = cluster["portfolio"]
     collection = PersonCollection(db["persons"])
 

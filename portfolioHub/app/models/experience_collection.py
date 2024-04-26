@@ -1,7 +1,7 @@
 from typing import List, Any, Dict
 from pymongo.collection import Collection
-from dbcollection import DbCollection
-from portfolioHub.app.models.experience import Experience
+from .dbcollection import DbCollection
+from .experience import Experience
 
 class ExperienceCollection(DbCollection):
     def __init__(self, collection: Collection):

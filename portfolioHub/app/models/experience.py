@@ -1,7 +1,7 @@
 from typing import List
 from pydantic import BaseModel, ConfigDict, Field
 from datetime import date
-from company import Company
+from .company import Company
 
 class Experience(BaseModel):
     # > make fields immutable after instantiation.

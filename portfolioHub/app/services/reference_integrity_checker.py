@@ -1,13 +1,16 @@
 from dataclasses import dataclass
-from ..models.dbcollection import DbCollection
+from pymongo import MongoClient
+from config import config
 
 @dataclass(frozen=True)
 class ReferenceIntegrityChecker:
-    id: int
-
     @staticmethod
-    def check_id_existence(id:int, collection: DbCollection) -> bool:
+    def check_id_existence(db_name, collection_name, id:int) -> bool:
+        cluster = MongoClient(config.atlas_conn_str)
+        db = cluster[db_name]
+        collection = db[collection_name]
         result = collection.find_one({"_id": id})
+
         if result == None:
             return False
         return True

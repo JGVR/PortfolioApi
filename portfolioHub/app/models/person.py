@@ -1,5 +1,5 @@
 from typing import List
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field
 from datetime import datetime
 from .hobby import Hobby
 

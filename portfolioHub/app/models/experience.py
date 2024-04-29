@@ -1,6 +1,6 @@
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel, ConfigDict, Field, field_validator
-from datetime import date
+from datetime import datetime
 from .company import Company
 from ..services.reference_integrity_checker import ReferenceIntegrityChecker
 
@@ -16,15 +16,16 @@ class Experience(BaseModel):
     job_title: str = Field(max_length=50, alias="jobTitle")
     job_description: str = Field(max_length=1000, default="", alias="jobDescription")
     company: Company
-    start_date: date = Field(alias="startDate", default=None)
-    end_date: date = Field(alias="endDate", default=None)
+    start_date: Optional[datetime] = Field(alias="startDate", default=None)
+    end_date: Optional[datetime] = Field(alias="endDate", default=None)
 
     @field_validator('person_id', mode="before")
     def check_person_id(cls, id) -> int:
         exists = ReferenceIntegrityChecker.check_id_existence("portfolio", "persons",id)
         if exists == False:
-            raise ValueError(f"The person Id: {id} was not found in the persons collection. Please make sure the person exists before assigning a project to a person.")
+            raise ValueError(f"The person Id: {id} was not found in the persons collection. Please make sure the person exists before assigning an experience to a person.")
         return id
+    
     
     @field_validator('project_ids', mode="before")
     def check_project_ids(cls, ids) -> List[int]:

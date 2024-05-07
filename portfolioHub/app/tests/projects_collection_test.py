@@ -4,7 +4,7 @@ from portfolioHub.app.models.project_collection import ProjectCollection
 from portfolioHub.app.models.project import Project
 from portfolioHub.app.models.skill import Skill
 from pymongo import MongoClient
-from config import config
+from portfolioHub.app.config import config
 from pydantic import ValidationError as PValidationError
 
 

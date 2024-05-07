@@ -1,5 +1,5 @@
 from typing import List
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 from datetime import datetime
 from .hobby import Hobby
 
@@ -27,3 +27,9 @@ class Person(BaseModel):
     achievement_ids: List[int] = Field(default=[])
     project_ids: List[int] = Field(default=[])
     experience_ids: List[int] = Field(default=[])
+
+    @field_validator('hobbies')
+    def parse_hobbies(cls, hobbies: List[str] = []):
+        if len(hobbies) > 0:
+            return [Hobby(name=hobby) for hobby in hobbies]
+        return hobbies

@@ -3,7 +3,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 from .skill import Skill
 from ..services.reference_integrity_checker import ReferenceIntegrityChecker
 from .person_collection import PersonCollection
-from config import config
+from ..config import config
 from pymongo import MongoClient
 
 class Project(BaseModel):

@@ -398,7 +398,7 @@ FodyWeavers.xsd
 *.sln.iml
 
 #ignore python virtual environment
-myenv/
+venv/
 
 #ignore .DS_Store file
 .DS_Store

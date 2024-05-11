@@ -9,7 +9,9 @@ class CollectionIdentifier:
     @staticmethod
     def identify_collection(collection_name: str):
         cluster = MongoClient(config.atlas_conn_str)
+        print("works")
         db = cluster[config.atlas_db_name]
+        print("does not")
 
         if 'persons' in collection_name:
             return PersonCollection(db[collection_name])

@@ -29,7 +29,8 @@ class Person(BaseModel):
     experience_ids: List[int] = Field(default=[])
 
     @field_validator('hobbies')
-    def parse_hobbies(cls, hobbies: List[str] = []):
-        if len(hobbies) > 0:
+    def parse_hobbies(cls, hobbies: List[str] | List[Hobby] = []):
+        if len(hobbies) > 0 and isinstance(hobbies[0], str):
             return [Hobby(name=hobby) for hobby in hobbies]
-        return hobbies
+        else:
+            return hobbies

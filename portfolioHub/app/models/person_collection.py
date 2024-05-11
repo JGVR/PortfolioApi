@@ -21,6 +21,7 @@ class PersonCollection(DbCollection):
     
     def find_one(self, filter: Dict[str,Any]) -> Person:
         data = self.collection.find_one(filter)
+        print(data)
         if data is not None:
             return Person(**data)
         return None

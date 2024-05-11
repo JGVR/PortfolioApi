@@ -2,14 +2,13 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from ..services.collection_identifier import CollectionIdentifier
+from ..services.query_param_parser import QueryParamParser
 
 @api_view(['GET'])
 def find(request):
     try:
-        data = dict(request.query_params)
-        print(data)
-        collection_name = data["collection"][0]
-        print(collection_name)
+        data = QueryParamParser.parse_query_params(request.query_params)
+        collection_name = data["collection"]
         collection = CollectionIdentifier.identify_collection(collection_name)
         data.pop("collection")
         model = collection.find_one(data)

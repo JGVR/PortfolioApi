@@ -23,9 +23,7 @@ class Project(BaseModel):
     #Validate person exists before inserting project
     @field_validator('person_id', mode='before')
     def check_person_id(cls, id) -> int:
-        db = MongoClient(config.atlas_conn_str)["portfolio"]
-        collection = PersonCollection(db['persons'])
-        exists = ReferenceIntegrityChecker.check_id_existence(id, collection)
+        exists = ReferenceIntegrityChecker.check_id_existence("portfolio", "persons", id)
         if exists == False:
             raise ValueError(f"The person Id: {id} was not found in the persons collections. Please make sure the person exists before assigning a project to a person.")
         return id

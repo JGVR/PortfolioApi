@@ -5,6 +5,7 @@ from app.routes.find_many import find_many
 from app.routes.delete import delete
 from app.routes.delete_many import delete_many
 from app.routes.insert_many import insert_many
+from app.routes.upsert import upsert
 
 urlpatterns = [
     path('insert/', insert),
@@ -12,5 +13,6 @@ urlpatterns = [
     path('find/', find),
     path('find_many/', find_many),
     path('delete/', delete),
-    path('delete_many/', delete_many)
+    path('delete_many/', delete_many),
+    path('upsert/', upsert)
 ]

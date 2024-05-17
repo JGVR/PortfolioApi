@@ -44,7 +44,7 @@ class PersonCollection(DbCollection):
     def upsert_one(self, filter: Dict[str,Any], modifications: Person | Dict[str,Any]) -> Dict[str,int]:
         person_data = modifications.model_dump(by_alias=True) if isinstance(modifications, Person) else modifications
         upsert_result = self.collection.update_one(filter, {"$set": person_data}, upsert=True)
-        result = {"count":upsert_result.modified_count} if upsert_result.modified_count > 0 else {"_id":result.upserted_id}
+        result = {"count":upsert_result.modified_count} if upsert_result.modified_count > 0 else {"_id":upsert_result.upserted_id}
         return result
     
     def upsert_many(self, filter: Dict[str,Any]) -> bool:

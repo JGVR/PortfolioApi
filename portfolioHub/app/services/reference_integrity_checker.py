@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from pymongo import MongoClient
-from config import config
+from ..config import config
 
 @dataclass(frozen=True)
 class ReferenceIntegrityChecker:

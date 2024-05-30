@@ -4,7 +4,7 @@ from portfolioHub.app.models.achievement import Achievement
 from portfolioHub.app.models.certificate import Certificate
 from portfolioHub.app.models.degree import Degree
 from portfolioHub.app.models.school import School
-from config import config
+from portfolioHub.app.config import config
 from pymongo import MongoClient
 
 class TestAchievementCollection:

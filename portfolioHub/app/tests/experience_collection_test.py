@@ -2,7 +2,7 @@ import pytest
 from portfolioHub.app.models.experience_collection import ExperienceCollection
 from portfolioHub.app.models.experience import Experience
 from portfolioHub.app.models.company import Company
-from config import config
+from portfolioHub.app.config import config
 from pymongo import MongoClient
 from datetime import datetime
 

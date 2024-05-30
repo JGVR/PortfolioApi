@@ -16,6 +16,7 @@ class Person(BaseModel):
     last_name: str = Field(min_length=1, max_length=250, alias="lastName")
     date_of_birth: datetime = Field(alias="dateOfBirth", default=datetime(1996, 9, 11))
     hobbies: List[Hobby] = Field(default=[])
+    embeddings: List[float] = Field(default=[])
     short_bio: str = Field(max_length=350, alias="shortBio", default="")
     bio: str = Field(max_length=1000, default="")
     country_of_birth: str = Field(default="", alias="countryOfBirth")

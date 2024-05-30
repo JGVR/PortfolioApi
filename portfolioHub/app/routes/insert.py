@@ -8,6 +8,7 @@ from ..services.request_body_parser import RequestBodyParser
 def insert(request):
     try:
         request_body = request.data
+        print(request_body)
         collection = CollectionIdentifier.identify_collection(request_body["collection"])
         model_data = RequestBodyParser.parse_request_body(request_body)
         resp = collection.insert_one(model_data)

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-@dataclass(froze=True)
+@dataclass(frozen=True)
 class RelevantDoc:
     content: str
 

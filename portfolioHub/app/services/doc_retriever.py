@@ -1,10 +1,10 @@
-from langchain_community.vectorstores import MongoDBAtlasVectorSearch
+from langchain_mongodb import MongoDBAtlasVectorSearch
 from ..utils.question import Question
 from ..utils.relevant_doc import RelevantDoc
 from dataclasses import dataclass
 from typing import List
 
-@dataclass(froze=True)
+@dataclass(frozen=True)
 class DocRetriever:
     vector_store: MongoDBAtlasVectorSearch
     k: int

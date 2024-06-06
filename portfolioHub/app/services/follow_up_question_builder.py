@@ -11,7 +11,7 @@ class FollowUpQuestionBuilder:
         prompt = ChatPromptTemplate.from_messages(
             [
                 (
-                    "systems", 
+                    "system", 
                     """Given the conversation history and a follow-up question, rephrase the follow-up question to make it a standalone question.
                     
                     Conversation History:
@@ -19,7 +19,7 @@ class FollowUpQuestionBuilder:
                     Standalone Question:"""),
                  (
                      "human",
-                     "Follow-up Question: {question}"
+                     "{question}"
                 )
             ]
         )

@@ -25,18 +25,20 @@ SECRET_KEY = 'django-insecure-z&ez#%7-y59*5p-#vwi-zx2)+@(egx1-!#t93f&szn0!jz&n+%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'rest_framework',
     'app'
 ]
@@ -69,7 +71,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'portfolioHub.wsgi.application'
+ASGI_APPLICATION = 'portfolioHub.asgi.application'
 
 
 # Database

@@ -8,11 +8,19 @@ class ChatHistorySummarizer:
     llm: ChatOpenAI
 
     def call(self, chat_history: ChatMessageHistory) -> str:
+        messages = [{message.type: message.content} for message in chat_history.messages]
         prompt = ChatPromptTemplate.from_messages(
             [
-                ("system", "system prompt. ChatHistory: {chat_history}")
+                (
+                    "system", 
+                    "I want you to summarize a conversation between an AI model and a user. Make sure to include key points of the conversation. I want you to summarize the conversation in a conversational manner."
+                ),
+                (
+                    "human",
+                    "ChatHistory: {chat_history}"
+                )
             ]
         )
         chain = prompt | self.llm
-        result = chain.invoke({"chat_history": chat_history}).content
+        result = chain.invoke({"chat_history": messages}).content
         return result

@@ -8,6 +8,7 @@ from ..services.doc_retriever import DocRetriever
 from ..services.chatbot import ChatBot
 from ..services.follow_up_question_builder import FollowUpQuestionBuilder
 from ..utils.question import Question
+from ..utils.answer import Answer
 from ..config import config
 from pymongo import MongoClient
 import json
@@ -22,7 +23,7 @@ class ChatBotConsumer(WebsocketConsumer):
     def receive(self, text_data):
         data = json.loads(text_data)
         if data["event"] == "qa":
-            llm = ChatOpenAI(model="gpt-4-turbo", api_key=config.openai_api_key, temperature=0.5)
+            llm = ChatOpenAI(model="gpt-4o", api_key=config.openai_api_key, temperature=0.5)
             question = Question(data["question"])
             stand_alone_q = FollowUpQuestionBuilder(llm).call(question, self.chat_history)
             cluster = MongoClient(config.atlas_conn_str)
@@ -33,18 +34,32 @@ class ChatBotConsumer(WebsocketConsumer):
             chatbot = ChatBot(llm=llm)
             chunks = []
             
+            #stream chatbot responses
             for chunk in chatbot.call(stand_alone_q.text, chat_history_summary, relevant_docs):
                 chunks.append(chunk)
                 response = {
                     "event": "qa",
                     "question": stand_alone_q.text,
-                    "text": chunk,
-                    "chat_history": chat_history_summary
+                    "text": chunk
                 }
                 self.send(text_data=json.dumps(response))
 
+            #send full answer
+            answer = Answer.from_chunks(chunks, stand_alone_q)
+            response = {
+                "event": "answer",
+                "message": answer.serialize()
+            }
+            self.send(text_data=json.dumps(response))
+
+            #add messages to chat history
             self.chat_history.add_user_message(question.text)
             self.chat_history.add_ai_message(stand_alone_q.text)
-
+        else:
+            response = {
+                "event": "error",
+                "text": f"""The following event is not available: {data["event"]}"""
+            }
+            self.send(text_data=json.dumps(response))
     def disconnect(self, close_code):
         pass

@@ -3,6 +3,7 @@ from typing import List, Any
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.callbacks.tracers import LangChainTracer
 from langchain_openai import ChatOpenAI
+from django.core.cache import cache
 from ..utils.question import Question
 from ..utils.relevant_doc import RelevantDoc
 from .streaming_callback_handler import StreamingCallbackHandler
@@ -32,10 +33,15 @@ class ChatBot:
                 "{question}"
             )
         ])
+
+        #trace calls with langsmith
         tracer = LangChainTracer()
         streaming_handler = StreamingCallbackHandler()
-        self.llm.callbacks = [tracer, streaming_handler]
+        self.llm.callbacks = [tracer,streaming_handler]
 
         chain = prompt | self.llm
         for chunk in chain.stream({"context": docs, "chat_history": chat_history_summary, "question":question}):
             yield chunk.content
+
+        run = tracer.latest_run
+        cache.set('run_id', run.id, 60*15)

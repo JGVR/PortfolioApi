@@ -3,6 +3,8 @@ from langchain_community.chat_message_histories import ChatMessageHistory
 from channels.generic.websocket import WebsocketConsumer
 from langchain_mongodb import MongoDBAtlasVectorSearch
 from langchain_openai import OpenAIEmbeddings
+from django.core.cache import cache
+from langsmith import Client
 from ..services.chat_history_summarizer import ChatHistorySummarizer
 from ..services.doc_retriever import DocRetriever
 from ..services.chatbot import ChatBot
@@ -23,7 +25,7 @@ class ChatBotConsumer(WebsocketConsumer):
     def receive(self, text_data):
         data = json.loads(text_data)
         if data["event"] == "qa":
-            llm = ChatOpenAI(model="gpt-4o", api_key=config.openai_api_key, temperature=0.5)
+            llm = ChatOpenAI(model=config.openai_chat_model, api_key=config.openai_api_key, temperature=0.3)
             question = Question(data["question"])
             stand_alone_q = FollowUpQuestionBuilder(llm).call(question, self.chat_history)
             cluster = MongoClient(config.atlas_conn_str)
@@ -55,6 +57,20 @@ class ChatBotConsumer(WebsocketConsumer):
             #add messages to chat history
             self.chat_history.add_user_message(stand_alone_q.text)
             self.chat_history.add_ai_message(answer.text)
+        elif data["event"] == "feedback":
+            client = Client() #init Langsmith
+            client.create_feedback(
+                run_id=cache.get('run_id'),
+                key="user-feedback",
+                score=data["score"],
+                comment=""
+            )
+            response = {
+                "event": "feedback",
+                "run_id": f"{cache.get('run_id')}",
+                "text": "feedback submitted!"
+            }
+            self.send(text_data=json.dumps(response))
         else:
             response = {
                 "event": "error",

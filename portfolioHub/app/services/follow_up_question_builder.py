@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from langchain_openai import ChatOpenAI
 from ..utils.question import Question
 from langchain_core.prompts import ChatPromptTemplate
+from langchain.callbacks.tracers import LangChainTracer
 
 @dataclass(frozen=True)
 class FollowUpQuestionBuilder:
@@ -23,10 +24,12 @@ class FollowUpQuestionBuilder:
                 )
             ]
         )
+        tracer = LangChainTracer() #trace the llm call to langsmith
         chain = prompt | self.llm
         stand_alone_q = chain.invoke(
             {
                 "chat_history": chat_history_summary, 
                 "question": question
-            }).content
+            },
+            config={"callbacks": [tracer]}).content
         return Question(stand_alone_q)

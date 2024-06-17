@@ -53,8 +53,8 @@ class ChatBotConsumer(WebsocketConsumer):
             self.send(text_data=json.dumps(response))
 
             #add messages to chat history
-            self.chat_history.add_user_message(question.text)
-            self.chat_history.add_ai_message(stand_alone_q.text)
+            self.chat_history.add_user_message(stand_alone_q.text)
+            self.chat_history.add_ai_message(answer.text)
         else:
             response = {
                 "event": "error",

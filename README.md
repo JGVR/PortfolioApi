@@ -142,10 +142,9 @@ The Portfolio API utilizes two main types of databases to store and manage data 
     - `call(self, question: Question, chat_history_summary: str, relevant_docs: List[RelevantDoc]) -> str`: method used to call the service class which stream the chatbot response.
 
 ## Data Security
-
 - Access to read and write data is strictly controlled through role-based access control (RBAC). Two different user roles are defined: one for reading data and another for both reading and writing data.
 - The admin user has exclusive write access to the databases, ensuring that only authorized changes can be made.
 
-## References
-
-- Include links to any relevant documentation, API references, or resources that provide additional information about the data design, databases used, or security protocols implemented.
+# Deployment Strategy
+- The API will be deployed in Azure as container apps. 
+- CD/CI will be set-up for both API so that any changes to the prod branch in the GitHub repo are automatically deployed to Azure.

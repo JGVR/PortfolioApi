@@ -28,7 +28,7 @@ The Portfolio API utilizes two main types of databases to store and manage data 
 ### Diagrams
 
 #### Model Data Classes UML 
-![Data Classes drawio (1)](https://github.com/JGVR/PortfolioApi/assets/54122915/db6e205d-8f81-4378-a4c8-ba6cd59fa6e2)
+![Data Classes drawio (2)](https://github.com/JGVR/PortfolioApi/assets/54122915/33316cb8-7e54-44cc-8f14-420995c21ecb)
 
 #### Collection Classes UML 
 ![Collection Classes - UML drawio](https://github.com/JGVR/PortfolioApi/assets/54122915/6c4bde4e-e2e6-4e9d-97e9-ab86bfcfeb55)

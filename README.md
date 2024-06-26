@@ -1,5 +1,5 @@
 # PortfolioApi
-PortfolioAPI is a RESTful service designed to seamlessly integrate with MongoDB, enabling efficient CRUD operations across various collections. It serves as the backbone for user interfaces that display comprehensive portfolio information, including work experiences and projects, tailored for individuals looking to showcase their professional journey. Unique to our API is the integration of a sophisticated Chatbot, powered by OpenAI's latest GPT-4o model, which acts as a personal assistant, enriching user interaction with instant, intelligent responses to inquiries. Developed with **django, pymongo, django channels, djnagorestframework, pydantic, langchain**, this API offers an unparalleled blend of functionality and user engagement.
+PortfolioAPI is a RESTful service designed to seamlessly integrate with MongoDB, enabling efficient CRUD operations across various collections. It serves as the backbone for user interfaces that display comprehensive portfolio information, including work experiences and projects, tailored for individuals looking to showcase their professional journey. Unique to our API is the integration of a sophisticated Chatbot, powered by OpenAI's latest GPT-4o model, which acts as a personal assistant, enriching user interaction with instant, intelligent responses to inquiries. Developed with **django, pymongo, django channels, djangorestframework, pydantic, langchain**, this API offers an unparalleled blend of functionality and user engagement.
 
 ## Getting Started
 
@@ -28,21 +28,35 @@ The Portfolio API utilizes two main types of databases to store and manage data 
 ### Diagrams
 
 #### Model Data Classes UML 
-![Data Classes drawio (1)](https://github.com/JGVR/PortfolioApi/assets/54122915/646a116e-2415-413d-aad9-d1a4769cda18)
+![Data Classes drawio (1)](https://github.com/JGVR/PortfolioApi/assets/54122915/db6e205d-8f81-4378-a4c8-ba6cd59fa6e2)
 
 #### Collection Classes UML 
-![Collection Classes - UML drawio (2)](https://github.com/JGVR/PortfolioApi/assets/54122915/b4cc0f94-ea3d-409e-9fab-49c6955d4fd5)
+![Collection Classes - UML drawio](https://github.com/JGVR/PortfolioApi/assets/54122915/6c4bde4e-e2e6-4e9d-97e9-ab86bfcfeb55)
 
 #### ChatBot Classes UML 
 ![ChatBot (1)](https://github.com/JGVR/PortfolioApi/assets/54122915/a1276fd5-f9d7-4a3a-a309-c1033931494e)
 
 ## Entities
 
-### Users
-
-- **Description**: Contains information about the individual, including personal details and professional achievements.
+### User
+- **Description**: Contains information about the individual.
 - **Fields**:
-  - `id`: Unique identifier for the user.
+  - `user_id`: The person’s first name.
+  - `email_address`: The person’s last name.
+  - `portfolio`: The user's portfolio
+ 
+### Portfolio
+- **Description**: Represents a portfolio. A user can have multiple versions of a portfolio.
+- **Fields**:
+  - `vesion`: A number identifying the portfolio version.
+  - `profile`: A UserProfile object.
+  - `experience`: A list of Experience objects.
+  - `projects`: A list of Project objects.
+  - `achievements`: A list of Achievement objects.
+
+### UserProfile
+- **Description**: Contains information about the individual.
+- **Fields**:
   - `first_Name`: The person’s first name.
   - `last_Name`: The person’s last name.
   - `date_of_birth`: The date the person was born.
@@ -51,50 +65,46 @@ The Portfolio API utilizes two main types of databases to store and manage data 
   - `bio`: A full biography of the person.
   - `country_of_birth`: The country where the person was born.
   - `country_of_residence`: The country where the person resides.
-  - `email_address`: The person’s email address.
   - `linkedIn_url`: The URL to the person’s LinkedIn profile.
-  - `gitHub)_url`: The URL to the person’s GitHub profile.
-- **Relationships**:
-  - One-to-Many with Projects, Experience, and Achievements.
+  - `gitHub_url`: The URL to the person’s GitHub profile.
 
 ### Projects
-
 - **Description**: Represents projects the individual has worked on.
 - **Fields**:
-  - `id`: Unique identifier for the project.
-  - `user_id`: Unique identifier for the user the project belongs to.
+- - `name`: Name of the project.
   - `description`: Detailed description of the project.
   - `skills`: Technologies used in the project.
   - `images`: URLs to images related to the project.
   - `url`: Link to the project, if available.
-- **Relationships**:
-  - Many-to-One with Users.
 
 ### Experience
-
-- **Description**: Work experience records of the individual.
+- **Description**: Represents the individual work experiences.
 - **Fields**:
-  - `id`: Unique identifier for the job experience.
-  - `user_id`: Unique identifier for the user the experience belongs to.
-  - `project_ids`: A list of project ids.
   - `company`: The company's name.
   - `job_title`: The title of the job.
   - `job_description`: Description of the job role.
   - `start_date`: The start date of the position.
   - `end_date`: The end date of the position, if applicable.
-- **Relationships**:
-  - Many-to-One with Users and Projects.
 
 ### Achievements
-
 - **Description**: Academic and professional achievements of the individual.
 - **Fields**:
-  - `id`: Unique identifier for the achievement.
-  - `user_id`: Unique identifier for the user the achievement belongs to.
   - `certificates`: Certificates earned by the individual.
   - `degrees`: Academic degrees earned by the individual.
-- **Relationships**:
-  - Many-to-One with Users.
+
+ ### Certificate
+- **Description**: Certificate earned by the individual.
+- **Fields**:
+  - `url`: Url to an image or pdf of the certificate.
+  - `description`: brief description of the certificate.
+  - `school`: school or platform where the certificate was earned.
+ 
+### Degree
+- **Description**: Degree earned by the individual.
+- **Fields**:
+  - `type`: What type of degree, ex: Bachelors in Science, Art, etc..
+  - `description`: brief description of the degree.
+  - `school`: school where the degree was earned.
 
 ## Chatbot
 - **Description**: A Chatbot that will act as your "Assistance" to answer questions only about you.

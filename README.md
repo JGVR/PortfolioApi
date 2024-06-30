@@ -37,6 +37,291 @@ If you are using docker, please follow the instructions below:
 2. Create a container:
    * docker run --name "container-name" --env-file "env-file" "name-of-your-docker-image"
 
+### Atlas Collection Schema
+```javascript
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "_id",
+      "type",
+      "createdAt"
+    ],
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "type": {
+        "enum": [
+          "user",
+          "profile",
+          "experience",
+          "project",
+          "achievement"
+        ],
+        "description": "The type field should be one of the following values: user, profile, experience, project, achievement"
+      },
+      "createdAt": {
+        "bsonType": "date",
+        "description": "The createdAt field must be a date field."
+      },
+      "userId": {
+        "bsonType": "string",
+        "description": "The userId field must a string that uniquely identifies a user."
+      }
+    },
+    "additionalProperties": false,
+    "dependencies": {
+      "type": {
+        "oneOf": [
+          {
+            "required": [
+              "userId",
+              "emailAddress"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "user"
+                ]
+              },
+              "emailAddress": {
+                "bsonType": "string",
+                "description": "The emailAddress field must be a string."
+              }
+            }
+          },
+          {
+            "required": [
+              "userId",
+              "firstName",
+              "lastName",
+              "shortBio"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "profile"
+                ]
+              },
+              "firstName": {
+                "bsonType": "string",
+                "description": "The firstName field must be a str no longer than 150 characters.",
+                "maxLength": 150
+              },
+              "lastName": {
+                "bsonType": "string",
+                "description": "The lastName field must be a str no longer than 250 characters.",
+                "maxLength": 250
+              },
+              "dateOfBirth": {
+                "bsonType": [
+                  "date",
+                  "null"
+                ],
+                "description": "The dateOfBirth field must be a date or null."
+              },
+              "hobbies": {
+                "bsonType": "array",
+                "items": {
+                  "bsonType": "string",
+                  "description": "The hobbies field must be an array of string."
+                }
+              },
+              "skills": {
+                "bsonType": "array",
+                "items": {
+                  "bsonType": "string",
+                  "description": "The skills field must be an array of string or null"
+                }
+              },
+              "shortBio": {
+                "bsonType": "string",
+                "description": "The shortBio field must be a string no longer than 1000 characters.",
+                "maxLength": 1000
+              },
+              "bio": {
+                "bsonType": [
+                  "string",
+                  "null"
+                ],
+                "description": "The bio field must be null or a string no longer than 2000 characters.",
+                "maxLength": 2000
+              },
+              "countryOfBirth": {
+                "bsonType": [
+                  "string",
+                  "null"
+                ],
+                "description": "The countryOfBirth field must be a string no longer than 100 characters or null."
+              },
+              "countryOfResidence": {
+                "bsonType": [
+                  "string",
+                  "null"
+                ],
+                "description": "The countryOfResidence field must be a string no longer than 100 characters or null."
+              },
+              "linkedInUrl": {
+                "bsonType": [
+                  "string",
+                  "null"
+                ],
+                "description": "The linkedInUrl field must be a string or null."
+              },
+              "gitHubUrl": {
+                "bsonType": [
+                  "string",
+                  "null"
+                ],
+                "description": "The gitHubUrl field must be a string or null."
+              }
+            }
+          },
+          {
+            "required": [
+              "userId",
+              "name",
+              "description"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "project"
+                ]
+              },
+              "name": {
+                "bsonType": "string",
+                "description": "Project name should be a string no longer than 250 characters.",
+                "maxLength": 250
+              },
+              "description": {
+                "bsonType": "string",
+                "description": "Project description should be a string no longer than 1000 characters",
+                "maxLength": 1000
+              },
+              "badges": {
+                "bsonType": "array",
+                "items": {
+                  "bsonType": "object",
+                  "description": "Project badges should be an object with a name property and an url property.",
+                  "required": [
+                    "name",
+                    "url"
+                  ],
+                  "properties": {
+                    "name": {
+                      "bsonType": "string",
+                      "description": "Badge name should be a string no longer than 100 characters.",
+                      "maxLength": 100
+                    },
+                    "url": {
+                      "bsonType": "string",
+                      "description": "Badge url should be a string."
+                    }
+                  }
+                }
+              },
+              "images": {
+                "bsonType": "array",
+                "items": {
+                  "bsonType": "string",
+                  "description": "Project images should be an array of string."
+                }
+              }
+            }
+          },
+          {
+            "required": [
+              "userId",
+              "jobTitle",
+              "company",
+              "startDate"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "experience"
+                ]
+              },
+              "jobTitle": {
+                "bsonType": "string",
+                "description": "The job title field must be a string no longer than 100 characters.",
+                "maxLength": 100
+              },
+              "jobDescription": {
+                "bsonType": [
+                  "null",
+                  "string"
+                ],
+                "description": "The job description field must be null or a string no longer than 1500 characters.",
+                "maxLength": 1500
+              },
+              "company": {
+                "bsonType": "string",
+                "description": "The company field must be a string no longer than 100 characters.",
+                "maxLength": 100
+              },
+              "startDate": {
+                "bsonType": "date",
+                "description": "The startDate field must be a date."
+              },
+              "endDate": {
+                "bsonType": [
+                  "null",
+                  "date"
+                ],
+                "description": "The endDate field must be null or a date."
+              }
+            }
+          },
+          {
+            "required": [
+              "userId",
+              "name",
+              "eduEntity"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "achievement"
+                ]
+              },
+              "name": {
+                "bsonType": "string",
+                "description": "The achievement name field must be a string no longer than 150 characters.",
+                "maxLength": 150
+              },
+              "description": {
+                "bsonType": [
+                  "string",
+                  "null"
+                ],
+                "description": "The achievement description field must be null or a string no longer than 1000 characters.",
+                "maxLength": 1000
+              },
+              "url": {
+                "bsonType": [
+                  "string",
+                  "null"
+                ],
+                "description": "The achievement url field must be null or a string."
+              },
+              "eduEntity": {
+                "bsonType": "string",
+                "description": "The eduEntity field must be a string no longer than 150 characters.",
+                "maxLength": 150
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "validationLevel": "strict"
+}
+```
+
 # Data Design
 
 This section provides a detailed overview of the data design, including the database schema, entity relationships, and security measures implemented to protect the data.

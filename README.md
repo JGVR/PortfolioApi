@@ -16,7 +16,7 @@ PortfolioAPI is a RESTful service designed to seamlessly integrate with MongoDB,
    * pip install -r requirements.txt
    
 ### Environment Variables
-Add the following environment variables to the project:
+Add the following environment variables to a .env file in the project:
 * ATLAS_ADMIN_USER
 * ATLAS_ADMIN_PW
 * ATLAS_CONN_STR

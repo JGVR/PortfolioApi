@@ -1,7 +1,7 @@
 from typing import List, Any, Dict
 from pymongo.collection import Collection
 from .dbcollection import DbCollection
-from .person import Person
+from .profile import Person
 
 class PersonCollection(DbCollection):
     def __init__(self, collection: Collection):

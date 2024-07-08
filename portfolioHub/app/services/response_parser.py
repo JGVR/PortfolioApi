@@ -1,6 +1,6 @@
 from typing import Dict, Any
 from ..models.achievement import Achievement
-from ..models.person import Person
+from ..models.profile import Person
 from ..models.experience import Experience
 from ..models.project import Project
 

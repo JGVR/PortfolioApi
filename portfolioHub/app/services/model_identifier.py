@@ -1,4 +1,4 @@
-from ..models.person import Person
+from ..models.profile import Person
 from ..models.achievement import Achievement
 from ..models.experience import Experience
 from ..models.project import Project

@@ -2,9 +2,7 @@ from typing import List
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from .skill import Skill
 from ..services.reference_integrity_checker import ReferenceIntegrityChecker
-from .person_collection import PersonCollection
-from ..config import config
-from pymongo import MongoClient
+from .badge import Badge
 
 class Project(BaseModel):
     # > make fields immutable after instantiation.
@@ -12,11 +10,10 @@ class Project(BaseModel):
     # > rejects extra fields from been added
     model_config = ConfigDict(frozen=True, str_strip_whitespace=True, extra='forbid')
 
-    id: int = Field(gt=0, alias="_id")
-    person_id: int = Field(gt=0, alias="personId")
-    name: str = Field(min_length=5 ,max_length=250)
-    description: str = Field(max_length=250)
-    skills: List[Skill] = Field(default=[])
+    user_id: int = Field(gt=0, alias="userId")
+    name: str = Field(max_length=250)
+    description: str = Field(max_length=1000)
+    badge: List[Badge] = Field(alias="badges")
     images: List[str] = Field(default=[])
     url: str = Field(default="")
 

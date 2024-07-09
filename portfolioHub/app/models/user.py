@@ -6,6 +6,7 @@ class User(BaseModel):
     # > rejects extra fields from been added
     model_config = ConfigDict(frozen=True, str_strip_whitespace=True, extra='forbid')
 
+    # > properties
     # > user_id must be greater than 0
     user_id: int = Field(alias="userId", gt=0)
     # > could use EmailStr pydantic type instead

@@ -10,7 +10,7 @@ class Profile(BaseModel):
     # > rejects extra fields from been added
     model_config = ConfigDict(frozen=True, str_strip_whitespace=True, extra='forbid')
 
-    # > id should be greater than 0
+    # > properties
     user_id: int = Field(gt=0, alias="userId")
     first_name: str = Field(min_length=1, max_length=250, alias="firstName")
     last_name: str = Field(min_length=1, max_length=250, alias="lastName")
@@ -23,11 +23,3 @@ class Profile(BaseModel):
     country_of_residence: str = Field(default="", alias="countryOfResidence")
     linkedIn_url: str = Field(default="", alias="linkedInUrl")
     gitHub_url: str = Field(default="", alias="gitHubUrl")
-
-
-    @field_validator('hobbies', mode='before')
-    def parse_hobbies(cls, hobbies: List[str] | List[Hobby] = []):
-        if len(hobbies) > 0 and isinstance(hobbies[0], str):
-            return [Hobby(name=hobby) for hobby in hobbies]
-        else:
-            return hobbies

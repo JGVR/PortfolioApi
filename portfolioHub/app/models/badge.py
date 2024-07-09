@@ -6,8 +6,7 @@ class Badge(BaseModel):
     # > strip white spaces from all str fields
     # > rejects extra fields from been added
     model_config = ConfigDict(frozen=True, str_strip_whitespace=True, extra='forbid')
-
-    # > name of the badge
+    
+    # > properties
     name: str = Field(max_length=100)
-    # > link to an image/icon
     url: str

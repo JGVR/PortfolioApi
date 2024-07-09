@@ -1,7 +1,6 @@
-from .edu_entity import EduEntity
-from pydantic import Field, BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
-class Degree(BaseModel):
+class EduEntity(BaseModel):
     # > make fields immutable after instantiation.
     # > strip white spaces from all str fields
     # > rejects extra fields from been added
@@ -9,6 +8,3 @@ class Degree(BaseModel):
 
     # > properties
     name: str = Field(max_length=150)
-    description: str = Field(max_length=1000, default="")
-    url: str
-    school: EduEntity

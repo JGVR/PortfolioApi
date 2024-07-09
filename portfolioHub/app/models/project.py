@@ -1,6 +1,5 @@
 from typing import List
 from pydantic import BaseModel, ConfigDict, Field, field_validator
-from .skill import Skill
 from ..services.reference_integrity_checker import ReferenceIntegrityChecker
 from .badge import Badge
 
@@ -16,11 +15,3 @@ class Project(BaseModel):
     badge: List[Badge] = Field(alias="badges")
     images: List[str] = Field(default=[])
     url: str = Field(default="")
-
-    #Validate person exists before inserting project
-    @field_validator('person_id', mode='before')
-    def check_person_id(cls, id) -> int:
-        exists = ReferenceIntegrityChecker.check_id_existence("portfolio", "persons", id)
-        if exists == False:
-            raise ValueError(f"The person Id: {id} was not found in the persons collections. Please make sure the person exists before assigning a project to a person.")
-        return id

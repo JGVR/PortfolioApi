@@ -1,6 +1,6 @@
 import pytest
 from datetime import datetime
-from portfolioHub.app.models.person_collection import PersonCollection
+from portfolioHub.app.models.user_handler import PersonCollection
 from portfolioHub.app.models.profile import Person
 from portfolioHub.app.models.hobby import Hobby
 from portfolioHub.app.config import config

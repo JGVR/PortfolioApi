@@ -1,5 +1,5 @@
 import pytest
-from portfolioHub.app.models.achievement_collection import AchievementCollection
+from portfolioHub.app.models.achievement_handler import AchievementCollection
 from portfolioHub.app.models.achievement import Achievement
 from portfolioHub.app.models.certificate import Certificate
 from portfolioHub.app.models.degree import Degree

@@ -1,5 +1,5 @@
-from ..models.person_collection import PersonCollection
-from ..models.achievement_collection import AchievementCollection
+from ..models.user_handler import PersonCollection
+from ..models.achievement_handler import AchievementCollection
 from ..models.experience_collection import ExperienceCollection
 from ..models.project_collection import ProjectCollection
 from pymongo import MongoClient

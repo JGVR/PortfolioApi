@@ -10,7 +10,7 @@ class UserHandler(DbHandler):
     def __init__(self, collection: Collection):
         self.collection = collection
 
-    def insert(self, users: List[User]) -> Dict[str, int]:
+    def insert(self, users: List[User]) -> List[ObjectId]:
         if not all(isinstance(user, User) for user in users):
             raise ValueError("Input data expected to be a list of User")
         
@@ -24,7 +24,7 @@ class UserHandler(DbHandler):
             data.update(user.model_dump(by_alias=True))
             users_data.append(data)
 
-        result = [{"_id": id} for id in self.collection.insert_many(users_data).inserted_ids]
+        result = self.collection.insert_many(users_data).inserted_ids
         return result
     
     def find(self, filter: Dict[str,Any], max_docs: int = 5) -> List[User]:

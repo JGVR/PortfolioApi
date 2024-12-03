@@ -6,20 +6,22 @@ from .hobby import Hobby
 from .skill import Skill
 from ..utils.type import Type
 from datetime import datetime
+from bson import ObjectId
 
 class ProfileHandler(DbHandler):
     def __init__(self, collection: Collection):
         self.collection = collection
 
-    def insert(self, profiles: List[Profile]) -> Dict[str, int]:
+    def insert(self, profiles: List[Profile]) -> List[ObjectId]:
         if not all(isinstance(profile, Profile) for profile in profiles):
             raise ValueError("Input data expected to be a list of Profile")
         
         profiles_data = []
         for profile in profiles:
             data = {
+                '_id': ObjectId(),
                 'type': Type.PROFILE.value,
-                'createdAt': datetime.today,
+                'createdAt': datetime.today(),
                 'userId': profile.user_id,
                 'firstName': profile.first_name,
                 'lastName': profile.last_name,
@@ -29,13 +31,13 @@ class ProfileHandler(DbHandler):
                 'shortBio': profile.short_bio,
                 'bio': profile.bio,
                 'countryOfBirth': profile.country_of_birth,
-                'coutryOfResidence': profile.country_of_residence,
+                'countryOfResidence': profile.country_of_residence,
                 'linkedInUrl': profile.linkedIn_url,
                 'gitHubUrl': profile.gitHub_url
             }
             profiles_data.append(data)
 
-        result = [{"_id": id} for id in self.collection.insert_many(profiles_data).inserted_ids]
+        result = self.collection.insert_many(profiles_data).inserted_ids
         return result
     
     def find(self, filter: Dict[str,Any], max_docs: int = 5) -> List[Profile]:
@@ -63,5 +65,5 @@ class ProfileHandler(DbHandler):
             return profiles
         return None
     
-    def delete_many(self, filter: Dict[str,Any]) -> Dict[str,int]:
+    def delete(self, filter: Dict[str,Any]) -> Dict[str,int]:
         return {"count":self.collection.delete_many(filter).deleted_count}

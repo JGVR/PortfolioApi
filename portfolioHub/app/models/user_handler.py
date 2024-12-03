@@ -4,6 +4,7 @@ from .db_handler import DbHandler
 from .user import User
 from ..utils.type import Type
 from datetime import datetime
+from bson import ObjectId
 
 class UserHandler(DbHandler):
     def __init__(self, collection: Collection):
@@ -16,8 +17,9 @@ class UserHandler(DbHandler):
         users_data = []
         for user in users:
             data = {
+                "_id": ObjectId(),
                 'type': Type.USER.value,
-                'createdAt': datetime.today
+                'createdAt': datetime.today()
             }
             data.update(user.model_dump(by_alias=True))
             users_data.append(data)
@@ -40,5 +42,5 @@ class UserHandler(DbHandler):
             return users
         return None
     
-    def delete_many(self, filter: Dict[str,Any]) -> Dict[str,int]:
+    def delete(self, filter: Dict[str,Any]) -> Dict[str,int]:
         return {"count":self.collection.delete_many(filter).deleted_count}

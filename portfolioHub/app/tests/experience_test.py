@@ -8,7 +8,7 @@ from datetime import datetime
 from bson import ObjectId
 
 class TestExperienceCollection:
-    cluster = cluster = MongoClient("mongodb+srv://jv_admin:Th0r3s3lDi0sDelTrueno1130!!@portfolio.jmd2tdg.mongodb.net/?retryWrites=true&w=majority&appName=Portfolio")
+    cluster = cluster = MongoClient(config.atlas_conn_str)
     db = cluster["portfolioHub"]
     collection = db["userPortfolio"]
     handler = ExperienceHandler(collection)

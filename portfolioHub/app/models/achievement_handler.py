@@ -8,6 +8,7 @@ from .edu_entity import EduEntity
 from ..utils.type import Type
 from ..utils.achiev_type import AchievType
 from datetime import datetime
+from bson import ObjectId
 
 class AchievementHandler(DbHandler):
     def __init__(self, collection: Collection):
@@ -22,8 +23,9 @@ class AchievementHandler(DbHandler):
         if len(achiev.certificates) >= 1:
             for cert in achiev.certificates:
                 data = {
+                    '_id': ObjectId(),
                     'type': Type.ACHIEVEMENT.value,
-                    'createdAt': datetime.today,
+                    'createdAt': datetime.today(),
                     'userId': achiev.user_id,
                     'achievType': AchievType.CERTIFICATE.value,
                     'name': cert.name,
@@ -36,8 +38,9 @@ class AchievementHandler(DbHandler):
         if len(achiev.degrees) >= 1:
             for degree in achiev.degrees:
                 data = {
+                    '_id': ObjectId(),
                     'type': Type.ACHIEVEMENT.value,
-                    'createdAt': datetime.today,
+                    'createdAt': datetime.today(),
                     'userId': achiev.user_id,
                     'achievType': AchievType.DEGREE.value,
                     'name': degree.name,
@@ -47,10 +50,10 @@ class AchievementHandler(DbHandler):
                 }
                 achievements_data.append(data)
 
-        result = [{"_id": id} for id in self.collection.insert_many(achievements_data).inserted_ids]
+        result = self.collection.insert_many(achievements_data).inserted_ids
         return result
     
-    def find(self, filter: Dict[str,Any], max_docs: int = 5) -> List[Achievement]:
+    def find(self, filter: Dict[str,Any], max_docs: int = 5) -> Achievement:
         cursor = self.collection.find(filter).limit(max_docs)
         certs = []
         degrees = []
@@ -58,7 +61,7 @@ class AchievementHandler(DbHandler):
 
         for doc in cursor:
             #Create Certificate
-            if doc["achievType"] == "certificate":
+            if doc["achievType"] == "certificates":
                 cert = Certificate(
                     name = doc["name"],
                     description = doc["description"],
@@ -89,5 +92,5 @@ class AchievementHandler(DbHandler):
             return achiev
         return None
     
-    def delete_many(self, filter: Dict[str,Any]) -> Dict[str,int]:
+    def delete(self, filter: Dict[str,Any]) -> Dict[str,int]:
         return {"count":self.collection.delete_many(filter).deleted_count}

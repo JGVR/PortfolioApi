@@ -11,5 +11,5 @@ class Degree(BaseModel):
     # > properties
     name: str = Field(max_length=150)
     description: str = Field(max_length=1000, default="")
-    url: str
+    url: str = Field(default="")
     school: EduEntity

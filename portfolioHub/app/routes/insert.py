@@ -22,7 +22,7 @@ def insert(request):
         embedding_model = OpenAIEmbeddings(model=config.openai_embedding_model, api_key=config.openai_api_key)
         doc_loader = AtlasDocumentLoader(embedding_model=embedding_model, collection_name="vectors", embedding_key="embeddings", index_name="vector_index")
         doc_loader.call(docs)
-        resp = handler.insert(model_data)
+        resp = [{"_id": str(id)} for id in handler.insert(model_data)]
         return Response(resp, status=status.HTTP_201_CREATED)
     except Exception as ex:
         return Response(f"Error: {ex}", status=status.HTTP_400_BAD_REQUEST)

@@ -12,7 +12,20 @@ class ModelIdentifier:
             case "user":
                 return User(**data)
             case "profile":
-                return Profile(**data)
+                return Profile(
+                    userId=data["userId"],
+                    firstName=data["firstName"],
+                    lastName=data["lastName"],
+                    dateOfBirth=data["dateOfBirth"],
+                    hobbies=data["hobby"],
+                    skills=data["skills"],
+                    shortBio = data["shortBio"],
+                    bio=data["bio"],
+                    countryOfBirth=data["countryOfBirth"],
+                    countryOfResidence=data["countryOfResidence"],
+                    linkedInUrl=data["linkedInUrl"],
+                    gitHubUrl=data["gitHubUrl"]
+                )
             case "project":
                 return Project(**data)
             case "experience":

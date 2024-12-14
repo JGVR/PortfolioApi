@@ -9,7 +9,7 @@ class ReferenceIntegrityChecker:
         cluster = MongoClient(config.atlas_conn_str)
         db = cluster[db_name]
         collection = db[collection_name]
-        result = collection.find_one({"_id": id})
+        result = collection.find_one({"userId": id})
 
         if result == None:
             return False

@@ -14,4 +14,4 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 #run the API using django dev servers
-CMD ["python", "portfolioHub/manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "portfolioHub/manage.py", "runserver", "0.0.0.0:8500"]

@@ -7,12 +7,12 @@ class Experience(BaseModel):
     # > strip white spaces from all str fields
     # > rejects extra fields from been added
     # > allows object to be instantiated by field name or alias
-    model_config = ConfigDict(frozen=True, str_strip_whitespace=True, extra='forbid', populate_by_name=True)
+    model_config = ConfigDict(frozen=True, str_strip_whitespace=True, str_to_lower=True, extra='forbid', populate_by_name=True)
 
     # > properties
     user_id: int = Field(gt=0, alias="userId")
-    job_title: str = Field(max_length=100, alias="jobTitle")
+    job_title: str = Field(max_length=150, alias="jobTitle")
     job_description: str = Field(max_length=1500, default="", alias="jobDescription")
     company: Company
-    start_date: datetime = Field(alias="startDate", default=None)
+    start_date: datetime = Field(alias="startDate")
     end_date: datetime = Field(alias="endDate", default=None)

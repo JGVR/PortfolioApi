@@ -5,7 +5,7 @@ class User(BaseModel):
     # > strip white spaces from all str fields
     # > rejects extra fields from been added
     # > allows object to be instantiated by field name or alias
-    model_config = ConfigDict(frozen=True, str_strip_whitespace=True, extra='forbid', populate_by_name=True)
+    model_config = ConfigDict(frozen=True, str_strip_whitespace=True, str_to_lower=True, extra='forbid', populate_by_name=True)
 
     # > properties
     # > user_id must be greater than 0

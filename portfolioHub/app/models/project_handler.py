@@ -18,12 +18,12 @@ class ProjectHandler(DbHandler):
         for project in projects:
             data = {
                 'type': Type.PROJECT.value,
-                'createdAt': datetime.today
+                'createdAt': datetime.today()
             }
             data.update(project.model_dump(by_alias=True))
             projects_data.append(data)
 
-        result = [{"_id": id} for id in self.collection.insert_many(projects_data).inserted_ids]
+        result = self.collection.insert_many(projects_data).inserted_ids
         return result
     
     def find(self, filter: Dict[str,Any], max_docs: int = 5) -> List[Project]:
@@ -45,5 +45,5 @@ class ProjectHandler(DbHandler):
             return projects
         return None
     
-    def delete_many(self, filter: Dict[str,Any]) -> Dict[str,int]:
+    def delete(self, filter: Dict[str,Any]) -> Dict[str,int]:
         return {"count":self.collection.delete_many(filter).deleted_count}

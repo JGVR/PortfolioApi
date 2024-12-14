@@ -1,8 +1,9 @@
 from typing import Dict, Any
 from ..models.achievement import Achievement
-from ..models.person import Person
+from ..models.profile import Profile
 from ..models.experience import Experience
 from ..models.project import Project
+from ..models.user import User
 
 class ResponseParser:
     @staticmethod

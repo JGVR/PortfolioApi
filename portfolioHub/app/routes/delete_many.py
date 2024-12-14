@@ -1,17 +1,22 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
-from ..services.collection_identifier import CollectionIdentifier
+from ..services.handler_identifier import HandlerIdentifier
 from ..services.query_param_parser import QueryParamParser
 from ..services.response_parser import ResponseParser
+from pymongo import MongoClient
+from ..config import config
 
 @api_view(['DELETE'])
 def delete_many(request):
     try:
+        client = MongoClient(config.atlas_conn_str)
+        db = client[config.atlas_db_name]
+        collection = db[config.atlas_collection_name]
         data = QueryParamParser.parse_query_params(request.query_params)
-        collection = CollectionIdentifier.identify_collection(data["collection"])
-        data.pop("collection")
-        resp = ResponseParser.parse_response(collection.delete_many(data))
+        handler = HandlerIdentifier.call(collection=collection, type=data["type"])
+        data.pop("type")
+        resp = ResponseParser.parse_response(handler.delete(data))
         return Response(resp, status.HTTP_200_OK, content_type="application/json")
     except Exception as ex:
         return Response(f"Error: {ex}", status.HTTP_400_BAD_REQUEST)

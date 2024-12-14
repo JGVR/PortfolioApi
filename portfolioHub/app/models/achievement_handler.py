@@ -16,7 +16,7 @@ class AchievementHandler(DbHandler):
 
     def insert(self, achiev: Achievement) -> Dict[str, int]:
         if not isinstance(achiev, Achievement):
-            raise ValueError("Input data expected to be a list of Achievement")
+            raise ValueError("Input data expected to be an Achievement object")
         
         achievements_data = []
         #Identify the type of achievemnt, and create dict based on the achiev schema

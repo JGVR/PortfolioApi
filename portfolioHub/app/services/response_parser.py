@@ -8,6 +8,7 @@ from ..models.user import User
 class ResponseParser:
     @staticmethod
     def parse_response(data) -> Dict[str, Any]:
+        print(data)
         if data is None:
             return {"result": "None"}
         else:

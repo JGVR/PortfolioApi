@@ -15,7 +15,6 @@ def find(request):
         collection = db[config.atlas_collection_name]
         data = QueryParamParser.parse_query_params(request.query_params)
         handler = HandlerIdentifier.call(collection=collection, type=data["type"])
-        data.pop("type")
         resp = ResponseParser.parse_response(handler.find(data))
         return Response(resp, status.HTTP_200_OK, content_type="application/json")
     except Exception as ex:

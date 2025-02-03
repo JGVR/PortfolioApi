@@ -41,10 +41,12 @@ class ProfileHandler(DbHandler):
         return result
     
     def find(self, filter: Dict[str,Any], max_docs: int = 5) -> List[Profile]:
+        print(filter)
         cursor = self.collection.find(filter).limit(max_docs)
         profiles = []
 
         for doc in cursor:
+            #print(doc)
             profile = Profile(
                 user_id = doc["userId"],
                 first_name = doc["firstName"],
@@ -59,7 +61,9 @@ class ProfileHandler(DbHandler):
                 linkedIn_url = doc["linkedInUrl"],
                 gitHub_url = doc["gitHubUrl"]
             )
+
             profiles.append(profile)
+        
 
         if len(profiles) > 0:
             return profiles

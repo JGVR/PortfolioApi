@@ -33,8 +33,8 @@ class ExperienceHandler(DbHandler):
         result = self.collection.insert_many(exps_data).inserted_ids
         return result
     
-    def find(self, filter: Dict[str,Any], max_docs: int = 5) -> List[Experience]:
-        cursor = self.collection.find(filter).limit(max_docs)
+    def find(self, filter: Dict[str,Any], max: int = 5, skip: int = 0) -> List[Experience]:
+        cursor = self.collection.find(filter).skip(skip).limit(max)
         exps = []
 
         for doc in cursor:

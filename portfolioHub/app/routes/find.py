@@ -13,9 +13,11 @@ def find(request):
         client = MongoClient(config.atlas_conn_str)
         db = client[config.atlas_db_name]
         collection = db[config.atlas_collection_name]
-        data = QueryParamParser.parse_query_params(request.query_params)
-        handler = HandlerIdentifier.call(collection=collection, type=data["type"])
-        resp = ResponseParser.parse_response(handler.find(data))
+        req = QueryParamParser.parse_query_params(request.query_params)
+        max = int(str(req.pop("max")))
+        skip = int(str(req.pop("skip")))
+        handler = HandlerIdentifier.call(collection=collection, type=req["type"])
+        resp = ResponseParser.parse_response(handler.find(req, max, skip))
         return Response(resp, status.HTTP_200_OK, content_type="application/json")
     except Exception as ex:
         return Response(f"Error: {ex}", status.HTTP_400_BAD_REQUEST)

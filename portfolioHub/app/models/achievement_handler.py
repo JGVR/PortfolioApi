@@ -53,8 +53,8 @@ class AchievementHandler(DbHandler):
         result = self.collection.insert_many(achievements_data).inserted_ids
         return result
     
-    def find(self, filter: Dict[str,Any], max_docs: int = 5) -> Achievement:
-        cursor = self.collection.find(filter).limit(max_docs)
+    def find(self, filter: Dict[str,Any], max: int = 5, skip: int = 0) -> Achievement:
+        cursor = self.collection.find(filter).skip(skip).limit(max)
         certs = []
         degrees = []
         user_id = None

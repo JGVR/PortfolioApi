@@ -40,13 +40,12 @@ class ProfileHandler(DbHandler):
         result = self.collection.insert_many(profiles_data).inserted_ids
         return result
     
-    def find(self, filter: Dict[str,Any], max_docs: int = 5) -> List[Profile]:
+    def find(self, filter: Dict[str,Any], max: int = 5, skip: int = 0) -> List[Profile]:
         print(filter)
-        cursor = self.collection.find(filter).limit(max_docs)
+        cursor = self.collection.find(filter).skip(skip).limit(max)
         profiles = []
 
         for doc in cursor:
-            #print(doc)
             profile = Profile(
                 user_id = doc["userId"],
                 first_name = doc["firstName"],

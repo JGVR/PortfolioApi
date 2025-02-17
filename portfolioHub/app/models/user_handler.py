@@ -27,8 +27,8 @@ class UserHandler(DbHandler):
         result = self.collection.insert_many(users_data).inserted_ids
         return result
     
-    def find(self, filter: Dict[str,Any], max_docs: int = 5) -> List[User]:
-        cursor = self.collection.find(filter).limit(max_docs)
+    def find(self, filter: Dict[str,Any], max: int = 5, skip: int = 0) -> List[User]:
+        cursor = self.collection.find(filter).skip(skip).limit(max)
         users = []
 
         for doc in cursor:

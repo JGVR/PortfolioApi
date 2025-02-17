@@ -26,8 +26,8 @@ class ProjectHandler(DbHandler):
         result = self.collection.insert_many(projects_data).inserted_ids
         return result
     
-    def find(self, filter: Dict[str,Any], max_docs: int = 5) -> List[Project]:
-        cursor = self.collection.find(filter).limit(max_docs)
+    def find(self, filter: Dict[str,Any], max: int = 5, skip: int = 0) -> List[Project]:
+        cursor = self.collection.find(filter).skip(skip).limit(max)
         projects = []
 
         for doc in cursor:
